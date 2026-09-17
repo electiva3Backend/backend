@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final IProductService prodServ;
@@ -54,7 +53,7 @@ public class ProductController {
         return ResponseEntity.ok(prodServ.getAllProductsByCategory(category));
     }
 
-    @PutMapping("id/{id}")
+    @PutMapping("/id/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Integer id,
             @Valid @RequestBody ProductCreateDTO dto) {
@@ -62,7 +61,7 @@ public class ProductController {
         return ResponseEntity.ok(prodServ.updateProduct(id, dto));
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteProduct(
             @PathVariable Integer id) {
 
