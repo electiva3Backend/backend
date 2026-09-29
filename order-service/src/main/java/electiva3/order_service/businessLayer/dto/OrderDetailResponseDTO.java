@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class OrderDetailResponseDTO {
     private Integer idProduct;
 
     @NotNull(message = "Precio actual del producto obligatorio.")
-    private Double unitaryCurrentPrice;
+    private BigDecimal unitaryCurrentPrice;
 
     @NotNull(message = "Cantidad de producto obligatorio.")
     private Integer quantity;

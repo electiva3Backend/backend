@@ -2,6 +2,7 @@ package electiva3.product_service.persistenceLayer.mappers;
 
 import electiva3.product_service.businessLayer.dto.ProductCreateDTO;
 import electiva3.product_service.businessLayer.dto.ProductResponseDTO;
+import electiva3.product_service.businessLayer.dto.ProductUpdateDTO;
 import electiva3.product_service.persistenceLayer.entities.ProductEntity;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public final class ProductMapper {
                 .toList();
     }
 
-    public static void updateEntityFromDTO(ProductEntity entity, ProductCreateDTO dto) {
+    public static void updateEntityFromDTO(ProductEntity entity, ProductUpdateDTO dto) {
 
         if (entity == null || dto == null) {
             throw new RuntimeException("Invalid data");

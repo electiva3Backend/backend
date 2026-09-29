@@ -1,12 +1,14 @@
 package electiva3.order_service.persistenceLayer.entities;
 
+import electiva3.order_service.persistenceLayer.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,10 +23,10 @@ public class OrderEntity {
     private Long id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetailEntity> orderDetails;
+    private List<OrderDetailEntity> orderDetails = new ArrayList<>();
 
     @Column(name = "id_user", nullable = false)
-    private Integer idUSer;
+    private Integer idUser;
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
@@ -33,15 +35,24 @@ public class OrderEntity {
     @Column(name = "informacion", nullable = false)
     private String information;
 
-    @Column(name = "total", nullable = false)
-    private Double total;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private OrderStatus status;
 
+    //Debe inicializarse ya que hago operaciones con el dato. Si no se inicializa hay nullpointer
+    @Column(name = "total", nullable = false)
+    private BigDecimal total = BigDecimal.valueOf(0);
 
     public void addOrderDetail(OrderDetailEntity orderDetail) {
+        if (orderDetail == null || orderDetail.getSubtotal() == null) {
+            throw new IllegalArgumentException("El detalle de orden o su subtotal no pueden ser nulos");
+        }
+
         orderDetails.add(orderDetail);
         orderDetail.setOrder(this);
 
-        this.total += orderDetail.getSubtotal();
+        // CORRECCIÓN: Sumar usando el método .add() de BigDecimal y reasignar
+        this.total = this.total.add(orderDetail.getSubtotal());
     }
 
 }

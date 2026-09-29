@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @NoArgsConstructor
 @Data
@@ -24,18 +26,23 @@ public class OrderDetailEntity {
     private Integer idProduct;
 
     @Column(name = "precio_actual_unitario")
-    private Double unitaryCurrentPrice;
+    private BigDecimal unitaryCurrentPrice;
 
     @Column(name = "cantidad")
     private Integer quantity;
 
     @Column(name = "subtotal")
-    private Double subtotal;
+    private BigDecimal subtotal;
 
-    public OrderDetailEntity(Double unitaryCurrentPrice, Integer quantity) {
+    // Opción Alternativa (Si obligatoriamente el parámetro debe seguir siendo Double)
+    public OrderDetailEntity(BigDecimal unitaryCurrentPrice, Integer quantity) {
         this.unitaryCurrentPrice = unitaryCurrentPrice;
         this.quantity = quantity;
 
-        this.subtotal = unitaryCurrentPrice * quantity;
+        // CORRECCIÓN: Convertir a BigDecimal por separado ANTES de multiplicar
+        BigDecimal quantityBD = BigDecimal.valueOf(quantity);
+
+        this.subtotal = unitaryCurrentPrice.multiply(quantityBD);
     }
+
 }

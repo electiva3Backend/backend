@@ -16,7 +16,7 @@ public class UserUpdateDTO {
 
     //Permite null, en caso de que no se envíe, el mapper válida que sea diferente de null para actualizar
     //Lookahead (condición negativa) No permite campo vacío ""
-    @Pattern(regexp = "^(?!\\s*$).{2,}$", message = "La contraseña debe tener al menos 2 caracteres y no estar vacía")
+    @Pattern(regexp = "^(?!\\s*$).{6,}$", message = "La contraseña debe tener al menos 2 caracteres y no estar vacía")
     private String password;
 
     @Pattern(regexp = "^(?!\\s*$).{2,}$", message = "El nombre debe tener al menos 2 caracteres y no estar vacío")
