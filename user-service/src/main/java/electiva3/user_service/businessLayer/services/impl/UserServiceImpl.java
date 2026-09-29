@@ -6,6 +6,8 @@ import electiva3.user_service.businessLayer.dto.UserUpdateDTO;
 import electiva3.user_service.businessLayer.services.IUserService;
 import electiva3.user_service.persistenceLayer.dao.UserDAO;
 import electiva3.user_service.persistenceLayer.entities.UserEntity;
+import electiva3.user_service.persistenceLayer.enums.Role;
+import electiva3.user_service.persistenceLayer.mappers.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,9 @@ public class UserServiceImpl implements IUserService {
 
         dto.setEmail(normalizeEmail(dto.getEmail()));
 
-        return userDAO.save(dto);
+        Role role = Role.USER;
+
+        return userDAO.save(dto, role);
     }
 
     @Transactional(readOnly = true)
@@ -75,24 +79,17 @@ public class UserServiceImpl implements IUserService {
             throw new RuntimeException("Credenciales inválidas");
         }
         String normalizedEmail = email.trim().toLowerCase();
-        String normalizedPassword = password.trim();
 
         UserEntity entity = userDAO.findEntityByEmail(normalizedEmail)
                 .orElseThrow(
                         () -> new RuntimeException("Credenciales inválidas.")
                 );
 
-        if (!entity.getPassword().equals(normalizedPassword)) {
+        if (!entity.getPassword().equals(password)) {
             throw new RuntimeException("Credenciales inválidas.");
         }
 
-        return new UserResponseDTO(
-                entity.getId(),
-                entity.getEmail(),
-                entity.getName(),
-                entity.getLastName(),
-                entity.getAge()
-        );
+        return UserMapper.toDTO(entity);
     }
 
 }

@@ -2,6 +2,7 @@ package electiva3.product_service.persistenceLayer.dao;
 
 import electiva3.product_service.businessLayer.dto.ProductCreateDTO;
 import electiva3.product_service.businessLayer.dto.ProductResponseDTO;
+import electiva3.product_service.businessLayer.dto.ProductUpdateDTO;
 import electiva3.product_service.persistenceLayer.entities.ProductEntity;
 import electiva3.product_service.persistenceLayer.mappers.ProductMapper;
 import electiva3.product_service.persistenceLayer.repositories.IProductRepository;
@@ -49,7 +50,13 @@ public class ProductDAO {
         return ProductMapper.toDTOList(entities);
     }
 
-    public Optional<ProductResponseDTO> update(Integer id, ProductCreateDTO updateDto) {
+    public List<ProductResponseDTO> findAllProductsById(List<Integer> ids) {
+
+        List<ProductEntity> entities = productRepository.findAllById(ids);
+        return ProductMapper.toDTOList(entities);
+    }
+
+    public Optional<ProductResponseDTO> update(Integer id, ProductUpdateDTO updateDto) {
 
         return productRepository.findById(id)
                 .map(existingEntity -> {
@@ -69,6 +76,14 @@ public class ProductDAO {
             return true;
         }
         return false;
+    }
+
+    public int reduceStockBulk(Integer productId, int quantity) {
+        return productRepository.decreaseStock(productId, quantity);
+    }
+
+    public int increaseStockBulk(Integer productId, int quantity) {
+        return productRepository.increaseStock(productId, quantity);
     }
 
 }

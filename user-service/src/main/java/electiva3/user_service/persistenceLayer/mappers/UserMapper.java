@@ -46,8 +46,11 @@ public final class UserMapper {
 
     public static void updateEntityFromDTO(UserUpdateDTO dto, UserEntity entity) {
 
+        //Es el único método del mapper que maneja excepción
+        //Aplica el enfoque Fail-Fast ruidoso lanzando IllegalArgumentException si los parámetros son nulos,
+        //porque en este escenario un nulo representa un error directo de programación en el Service(desarrollador).
         if (dto == null || entity == null) {
-            throw new RuntimeException("Invalid data");
+            throw new IllegalArgumentException("Mapper Invalid data");
         }
 
         if (dto.getEmail() != null) entity.setEmail(dto.getEmail());

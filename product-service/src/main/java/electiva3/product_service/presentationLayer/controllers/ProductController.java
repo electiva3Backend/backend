@@ -1,7 +1,9 @@
 package electiva3.product_service.presentationLayer.controllers;
 
+import electiva3.product_service.businessLayer.dto.ProductStockUpdateDTO;
 import electiva3.product_service.businessLayer.dto.ProductCreateDTO;
 import electiva3.product_service.businessLayer.dto.ProductResponseDTO;
+import electiva3.product_service.businessLayer.dto.ProductUpdateDTO;
 import electiva3.product_service.businessLayer.services.IProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +48,30 @@ public class ProductController {
         return ResponseEntity.ok(prodServ.getAllProducts());
     }
 
+    @GetMapping("/all/id")
+    public ResponseEntity<List<ProductResponseDTO>> getAllProductsById(
+            @RequestParam("ids") List<Integer> ids
+    ) {
+
+        return ResponseEntity.ok(prodServ.getAllProductsById(ids));
+    }
+
+    @PutMapping("all/r/ids")
+    public ResponseEntity<Void> reduceProductsStock(
+            @RequestBody List<ProductStockUpdateDTO> quantityUpdate
+    ) {
+        prodServ.reduceStockBulk(quantityUpdate);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("all/i/ids")
+    public ResponseEntity<Void> increaseProductsStock(
+            @RequestBody List<ProductStockUpdateDTO> quantityUpdate
+    ) {
+        prodServ.increaseStockBulk(quantityUpdate);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/category/{category}")
     public ResponseEntity<List<ProductResponseDTO>> getAllProductsByCategory(
             @PathVariable String category) {
@@ -56,7 +82,7 @@ public class ProductController {
     @PutMapping("/id/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Integer id,
-            @Valid @RequestBody ProductCreateDTO dto) {
+            @Valid @RequestBody ProductUpdateDTO dto) {
 
         return ResponseEntity.ok(prodServ.updateProduct(id, dto));
     }
@@ -68,4 +94,5 @@ public class ProductController {
         prodServ.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
 }
