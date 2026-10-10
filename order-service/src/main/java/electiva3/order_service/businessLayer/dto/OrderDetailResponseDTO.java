@@ -1,6 +1,5 @@
 package electiva3.order_service.businessLayer.dto;
 
-import electiva3.order_service.persistenceLayer.entities.OrderEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +29,6 @@ public class OrderDetailResponseDTO {
     private Integer quantity;
 
     @NotNull(message = "Subtotal obligatorio.")
-    private Double subtotal;
+    private BigDecimal subtotal;
 
 }
