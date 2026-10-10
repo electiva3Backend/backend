@@ -27,4 +27,7 @@ public class UserResponseDTO {
     @NotNull(message = "La edad no puede estar vacía")
     private Integer age;
 
+    @NotNull(message = "El rol no puede estar vacía")
+    private String rol;
+
 }
