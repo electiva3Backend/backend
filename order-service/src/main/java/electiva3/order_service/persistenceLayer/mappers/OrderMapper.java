@@ -1,8 +1,8 @@
 package electiva3.order_service.persistenceLayer.mappers;
 
 import electiva3.order_service.businessLayer.dto.OrderCreateDTO;
+import electiva3.order_service.businessLayer.dto.OrderDetailResponseDTO;
 import electiva3.order_service.businessLayer.dto.OrderResponseDTO;
-import electiva3.order_service.persistenceLayer.entities.OrderDetailEntity;
 import electiva3.order_service.persistenceLayer.entities.OrderEntity;
 
 import java.util.List;
@@ -32,16 +32,16 @@ public final class OrderMapper {
         dto.setId(entity.getId());
         dto.setInformation(entity.getInformation());
         dto.setStatus(entity.getStatus());
-        dto.setIdUSer(entity.getIdUser());
+        dto.setIdUser(entity.getIdUser());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setTotal(entity.getTotal());
 
         if (entity.getOrderDetails() != null) {
-            List<Long> orderDetailsIds = entity.getOrderDetails()
+            List<OrderDetailResponseDTO> details = entity.getOrderDetails()
                     .stream()
-                    .map(OrderDetailEntity::getId)
+                    .map(OrderDetailMapper::toDTO)
                     .toList();
-            dto.setOrderDetails(orderDetailsIds);
+            dto.setOrderDetails(details);
         }
 
         return dto;

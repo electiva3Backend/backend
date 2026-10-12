@@ -40,6 +40,7 @@ public final class UserMapper {
         responseDTO.setName(entity.getName());
         responseDTO.setLastName(entity.getLastName());
         responseDTO.setAge(entity.getAge());
+        responseDTO.setRol(String.valueOf(entity.getRole()));
 
         return responseDTO;
     }

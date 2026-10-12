@@ -19,10 +19,10 @@ public class OrderResponseDTO {
     private Long id;
 
     @NotEmpty(message = "Los detalles de orden son obligatorios")
-    private List<Long> orderDetails;
+    private List<OrderDetailResponseDTO> orderDetails;
 
     @NotNull(message = "El id del usuario es obligatorio")
-    private Integer idUSer;
+    private Integer idUser;
 
     @NotNull(message = "La fecha de creación no puede estar vacía")
     private Instant createdAt;
