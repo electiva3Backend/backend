@@ -55,6 +55,10 @@ public class UserDAO {
         return false;
     }
 
+    public UserEntity saveEntity(UserEntity entity) {
+        return userRepository.save(entity);
+    }
+
     public Optional<UserEntity> findEntityByEmail(String email) {
         return userRepository.findEntityByEmail(email);
     }

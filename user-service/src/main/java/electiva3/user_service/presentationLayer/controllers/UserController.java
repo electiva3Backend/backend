@@ -1,9 +1,6 @@
 package electiva3.user_service.presentationLayer.controllers;
 
-import electiva3.user_service.businessLayer.dto.LoginRequestDTO;
-import electiva3.user_service.businessLayer.dto.UserRegisterDTO;
-import electiva3.user_service.businessLayer.dto.UserResponseDTO;
-import electiva3.user_service.businessLayer.dto.UserUpdateDTO;
+import electiva3.user_service.businessLayer.dto.*;
 import electiva3.user_service.businessLayer.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
         return ResponseEntity.ok(
                 userService.login(
                         loginRequest.getEmail(),

@@ -1,5 +1,6 @@
 package electiva3.user_service.businessLayer.services.impl;
 
+import electiva3.user_service.businessLayer.dto.AuthResponseDTO;
 import electiva3.user_service.businessLayer.dto.UserRegisterDTO;
 import electiva3.user_service.businessLayer.dto.UserResponseDTO;
 import electiva3.user_service.businessLayer.dto.UserUpdateDTO;
@@ -8,6 +9,7 @@ import electiva3.user_service.persistenceLayer.dao.UserDAO;
 import electiva3.user_service.persistenceLayer.entities.UserEntity;
 import electiva3.user_service.persistenceLayer.enums.Role;
 import electiva3.user_service.persistenceLayer.mappers.UserMapper;
+import electiva3.user_service.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements IUserService {
 
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Transactional
     @Override
@@ -75,8 +78,8 @@ public class UserServiceImpl implements IUserService {
         return email.trim().toLowerCase();
     }
 
-    @Transactional(readOnly = true)
-    public UserResponseDTO login(String email, String password) {
+    @Transactional()
+    public AuthResponseDTO login(String email, String password) {
         if (email == null || password == null) {
             throw new RuntimeException("Credenciales inválidas");
         }
@@ -87,11 +90,40 @@ public class UserServiceImpl implements IUserService {
                         () -> new RuntimeException("Credenciales inválidas.")
                 );
 
-        if (!entity.getPassword().equals(password)) {
-            throw new RuntimeException("Credenciales inválidas.");
+        String storedPassword = entity.getPassword();
+
+        boolean validPassword;
+        if (isBcryptHash(storedPassword)) {
+            validPassword = passwordEncoder.matches(password, storedPassword);
+        } else {
+            validPassword = storedPassword.equals(password);
+
+            if (validPassword) {
+                entity.setPassword(passwordEncoder.encode(password));
+                userDAO.saveEntity(entity);
+            }
         }
 
-        return UserMapper.toDTO(entity);
+        if (!validPassword) {
+            throw new RuntimeException("Credenciales inválidas");
+        }
+
+        UserResponseDTO user = UserMapper.toDTO(entity);
+        String token = jwtService.createToken(user.getEmail(), user.getRol());
+
+        return new AuthResponseDTO(
+                token,
+                "Bearer",
+                jwtService.getExpirationSeconds(),
+                user
+        );
+    }
+
+    private boolean isBcryptHash(String value) {
+        return value != null
+                && (value.startsWith("$2a$")
+                || value.startsWith("$2b$")
+                || value.startsWith("$2y$"));
     }
 
 }

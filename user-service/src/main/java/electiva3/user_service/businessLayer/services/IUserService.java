@@ -1,5 +1,6 @@
 package electiva3.user_service.businessLayer.services;
 
+import electiva3.user_service.businessLayer.dto.AuthResponseDTO;
 import electiva3.user_service.businessLayer.dto.UserRegisterDTO;
 import electiva3.user_service.businessLayer.dto.UserResponseDTO;
 import electiva3.user_service.businessLayer.dto.UserUpdateDTO;
@@ -18,5 +19,5 @@ public interface IUserService {
 
     void delete(Integer id);
 
-    UserResponseDTO login(String email, String password);
+    AuthResponseDTO login(String email, String password);
 }

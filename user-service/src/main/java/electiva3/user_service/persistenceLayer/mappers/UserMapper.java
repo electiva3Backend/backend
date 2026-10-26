@@ -8,7 +8,8 @@ import electiva3.user_service.persistenceLayer.enums.Role;
 
 import java.util.List;
 
-public final class UserMapper {
+public final class
+UserMapper {
 
     private UserMapper() {
 
