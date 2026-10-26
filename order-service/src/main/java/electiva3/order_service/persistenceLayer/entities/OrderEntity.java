@@ -32,7 +32,7 @@ public class OrderEntity {
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @Column(name = "informacion")
+    @Column(name = "informacion", nullable = false)
     private String information;
 
     @Enumerated(EnumType.STRING)

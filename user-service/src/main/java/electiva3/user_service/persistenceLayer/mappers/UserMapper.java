@@ -8,19 +8,20 @@ import electiva3.user_service.persistenceLayer.enums.Role;
 
 import java.util.List;
 
-public final class UserMapper {
+public final class
+UserMapper {
 
     private UserMapper() {
 
     }
 
-    public static UserEntity toEntity(UserRegisterDTO dto, Role role) {
+    public static UserEntity toEntity(UserRegisterDTO dto, Role role, String encode) {
         if (dto == null || role == null) return null;
 
         UserEntity entity = new UserEntity();
 
         entity.setEmail(dto.getEmail());
-        entity.setPassword(dto.getPassword());
+        entity.setPassword(encode);
         entity.setName(dto.getName());
         entity.setLastName(dto.getLastName());
         entity.setAge(dto.getAge());
