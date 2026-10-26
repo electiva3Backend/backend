@@ -9,6 +9,7 @@ import electiva3.user_service.persistenceLayer.entities.UserEntity;
 import electiva3.user_service.persistenceLayer.enums.Role;
 import electiva3.user_service.persistenceLayer.mappers.UserMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class UserServiceImpl implements IUserService {
 
     private final UserDAO userDAO;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -29,7 +31,7 @@ public class UserServiceImpl implements IUserService {
 
         Role role = Role.USER;
 
-        return userDAO.save(dto, role);
+        return userDAO.save(dto, role, passwordEncoder.encode(dto.getPassword()));
     }
 
     @Transactional(readOnly = true)

@@ -19,9 +19,9 @@ public class UserDAO {
 
     private final IUserRepository userRepository;
 
-    public UserResponseDTO save(UserRegisterDTO dto, Role role) {
+    public UserResponseDTO save(UserRegisterDTO dto, Role role, String encode) {
 
-        UserEntity entity = UserMapper.toEntity(dto, role);
+        UserEntity entity = UserMapper.toEntity(dto, role, encode);
         UserEntity savedEntity = userRepository.save(entity);
 
         return UserMapper.toDTO(savedEntity);
