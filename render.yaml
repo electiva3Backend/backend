@@ -1,0 +1,60 @@
+services:
+  - type: web
+    name: user-service
+    runtime: docker
+    plan: free
+    rootDir: user-service
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: APP_JWT_SECRET
+        sync: false
+
+  - type: web
+    name: product-service
+    runtime: docker
+    plan: free
+    rootDir: product-service
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: order-service
+    runtime: docker
+    plan: free
+    rootDir: order-service
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: PRODUCT_SERVICE_URL
+        sync: false
+      - key: USER_SERVICE_URL
+        sync: false
+
+  - type: web
+    name: api-gateway
+    runtime: docker
+    plan: free
+    rootDir: api-gateway
+    envVars:
+      - key: USER_SERVICE_URL
+        sync: false
+      - key: PRODUCT_SERVICE_URL
+        sync: false
+      - key: ORDER_SERVICE_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
